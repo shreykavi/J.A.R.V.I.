@@ -5,14 +5,12 @@ J.A.R.V.I.S. Ideas:
 - Turn on TV(periferral)
 - Open app on screen (could set name to TV or main monitor etc)
     - Open game?
-    - Open youtube and search (blah)
-    - Open plex
-    - Open netflix
 - Give me a new word to learn
 - Download movies, music albums, books on plexbox
 - Move to Network -> Moves working dir to NAS for usage on any comp
 - Computer volume (blah)
 
+TODO: open on startup
 """
 
 import os
@@ -28,14 +26,13 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 client = discord.Client()
 
 # regex match for smart string processing
-
 import re
 command = re.compile(
     f"(?P<command>[a-z_]+)"
     f"( )*"
-    f"(?P<app>[a-z_]+)"
+    f"(?P<app>[a-z_]*)"
     "( for )*"
-    f"(?P<param>[a-z_0-9 ]+)"
+    f"(?P<param>[a-z_0-9 ]*)"
 )
 def extract_command(message):
     regex_match = command.match(message)
@@ -72,7 +69,7 @@ async def on_message(message):
     if msg == 'test':
         response = msg
         await message.channel.send(response)
-    if ext_cmd['command'] == 'open' or ext_cmd['command'] == 'search':
+    elif ext_cmd['command'] == 'open' or ext_cmd['command'] == 'search':
         bashCommand = "/mnt/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe"
         search_term = ext_cmd['param']
         
@@ -82,12 +79,16 @@ async def on_message(message):
             args = "https://app.plex.tv/desktop#!/search?query=" + search_term
         elif ext_cmd['app'] == 'youtube':
             args = "https://www.youtube.com/results?search_query=" + search_term
-            
+
 
         # TODO: open on `preferred_screen 2` -> fix wmctrl
 
         process = subprocess.Popen([bashCommand, args], stdout=subprocess.PIPE)
         output, error = process.communicate()
+    elif ext_cmd['command'] == 'teamviewer':
+        bashCommand = "/mnt/c/Program Files (x86)/TeamViewer/TeamViewer.exe"
+        process = subprocess.Popen([bashCommand], stdout=subprocess.PIPE)
+        # output, error = process.communicate()
     else:
         await message.channel.send("Sorry Shrey I don't understand that command :(")
 
