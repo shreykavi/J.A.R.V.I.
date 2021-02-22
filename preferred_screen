@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+"""
+sudo apt-get install xdotool
+sudo apt-get install wmctrl
+"""
+
+import subprocess
+import time
+import sys
+
+#--- enter the horizontal resolution of the left screen below
+left_width = 1600
+#---
+
+target_screen = int(sys.argv[1])
+get = lambda cmd: subprocess.check_output(cmd).decode("utf-8")
+
+def new_window(left_width):
+    w_list1 = get(["wmctrl", "-lG"]).splitlines()
+    while True:
+        time.sleep(1)
+        w_list2 = get(["wmctrl", "-lG"]).splitlines()
+        new = [w.split() for w in w_list2 if not w in w_list1]
+        if len(new) != 0:
+            data = new[0]
+            pos = 1 if int(data[2]) < left_width else 2
+            coords = data[2:4]
+            w_id = data[0]
+            return [w_id, pos, coords]
+            break
+
+subject = new_window(left_width)
+if not int(subject[1]) == target_screen:
+    move = -left_width if target_screen == 1 else left_width - int(subject[2][0])
+    subprocess.Popen(["xdotool", "windowmove", subject[0], str(int(subject[2][0])+move), subject[2][1]])
