@@ -8,3 +8,11 @@ To run:
 DISCORD_TOKEN=xxx
 DISCORD_GUILD=xxx
 ```
+
+NOTE:
+This works with commands that prefix with `JARVIS::` and then the actual command.
+Ex. `JARVIS::test`
+
+List of current commands:
+test - Reply with 'test'
+(open|search) (netflix|plex|youtube) for {any text here} - open Brave with app on a search term

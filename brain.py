@@ -27,6 +27,21 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 client = discord.Client()
 
+# regex match for smart string processing
+
+import re
+command = re.compile(
+    f"(?P<command>[a-z_]+)"
+    f"( )*"
+    f"(?P<app>[a-z_]+)"
+    "( for )*"
+    f"(?P<param>[a-z_0-9 ]+)"
+)
+def extract_command(message):
+    regex_match = command.match(message)
+    return regex_match.groupdict()
+
+
 @client.event
 async def on_ready():
     print(f'{client.user.name} has connected to Discord!')
@@ -35,7 +50,7 @@ async def on_ready():
 async def on_member_join(member):
     await member.create_dm()
     await member.dm_channel.send(
-        f'Hi {member.name}, welcome to my Discord server!'
+        f'GTFO of here {member.name}, this is Shreys private server!'
     )
 
 @client.event
@@ -49,21 +64,28 @@ async def on_message(message):
         print("Not a J.A.R.V.I.S. command.")
         return
 
-    #TODO: regex match for smarter string processing!
-
+    # Extract pieces from msg
     msg = msg.replace("JARVIS::","").lower()
+    ext_cmd = extract_command(msg)
+    print(f"Received: {ext_cmd}")
+
     if msg == 'test':
         response = msg
         await message.channel.send(response)
-    if msg == 'open netflix':
-        # response = msg
-        # await message.channel.send(response)
+    if ext_cmd['command'] == 'open' or ext_cmd['command'] == 'search':
         bashCommand = "/mnt/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe"
+        search_term = ext_cmd['param']
+        
+        if ext_cmd['app'] == 'netflix':
+            args = "https://www.netflix.com/search?q=" + search_term
+        elif ext_cmd['app'] == 'plex':
+            args = "https://app.plex.tv/desktop#!/search?query=" + search_term
+        elif ext_cmd['app'] == 'youtube':
+            args = "https://www.youtube.com/results?search_query=" + search_term
+            
 
-        # TODO: extract search term from command
         # TODO: open on `preferred_screen 2` -> fix wmctrl
-        search_term = "pokemon"
-        args = "https://www.netflix.com/search?q=" + search_term
+
         process = subprocess.Popen([bashCommand, args], stdout=subprocess.PIPE)
         output, error = process.communicate()
     else:
