@@ -9,7 +9,7 @@ J.A.R.V.I.S. Ideas:
 - Download movies, music albums, books on plexbox
 - Move to Network -> Moves working dir to NAS for usage on any comp
 - Computer volume (blah)
-
+- pause and play any playback
 TODO: open on startup
 """
 
