@@ -16,6 +16,7 @@ TODO: open on startup
 import os
 import random
 import subprocess
+from sys import platform
 
 import discord
 from dotenv import load_dotenv
@@ -70,25 +71,31 @@ async def on_message(message):
         response = msg
         await message.channel.send(response)
     elif ext_cmd['command'] == 'open' or ext_cmd['command'] == 'search':
-        bashCommand = "/mnt/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe"
         search_term = ext_cmd['param']
         
         if ext_cmd['app'] == 'netflix':
-            args = "https://www.netflix.com/search?q=" + search_term
+            args = "https://www.netflix.com/search?q=" + search_term.replace(" ", "+")
         elif ext_cmd['app'] == 'plex':
-            args = "https://app.plex.tv/desktop#!/search?query=" + search_term
+            args = "https://app.plex.tv/desktop#!/search?query=" + search_term.replace(" ", "+")
         elif ext_cmd['app'] == 'youtube':
-            args = "https://www.youtube.com/results?search_query=" + search_term
+            args = "https://www.youtube.com/results?search_query=" + search_term.replace(" ", "+")
 
+        if platform == "darwin":
+            bashCommand = "/Applications/Brave Browser.app"
+            process = subprocess.Popen(['open', bashCommand, args], stdout=subprocess.PIPE)
+        elif platform == "win32":
+            bashCommand = "/mnt/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe"
+            process = subprocess.Popen([bashCommand, args], stdout=subprocess.PIPE)
 
         # TODO: open on `preferred_screen 2` -> fix wmctrl
-
-        process = subprocess.Popen([bashCommand, args], stdout=subprocess.PIPE)
+        
         output, error = process.communicate()
     elif ext_cmd['command'] == 'teamviewer':
+        if platform == "darwin":
+            await message.channel.send("JARVIS-OSX doesn't do teamviewer :S") 
+            return
         bashCommand = "/mnt/c/Program Files (x86)/TeamViewer/TeamViewer.exe"
         process = subprocess.Popen([bashCommand], stdout=subprocess.PIPE)
-        # output, error = process.communicate()
     else:
         await message.channel.send("Sorry Shrey I don't understand that command :(")
 
