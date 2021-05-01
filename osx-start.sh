@@ -1,0 +1,1 @@
+python /Users/jarvis/Desktop/projects/J.A.R.V.I.S./brain.py

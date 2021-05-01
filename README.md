@@ -9,7 +9,10 @@ DISCORD_TOKEN=xxx
 DISCORD_GUILD=xxx
 ```
 
-NOTE:
+# Run at startup on OSX
+add the osx-start.sh file to "System Preference -> Users and Groups -> Login items"
+
+# Description
 This works with commands that prefix with `JARVIS::` and then the actual command.
 Ex. `JARVIS::test`
 
