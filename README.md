@@ -12,6 +12,11 @@ DISCORD_GUILD=xxx
 # Run at startup on OSX
 add the osx-start.sh file to "System Preference -> Users and Groups -> Login items"
 
+# Run at startup on Windows 7+
+1. Open 'run' and run the command `shell:startup`
+2. Create shortcut to run.bat and move shortcut to the Startup folder that was just opened
+3. Right click on shortcut, click on properties and set Run to minimized so it doesn't pop up on startup
+
 # Description
 This works with commands that prefix with `JARVIS::` and then the actual command.
 Ex. `JARVIS::test`

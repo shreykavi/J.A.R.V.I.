@@ -10,7 +10,6 @@ J.A.R.V.I.S. Ideas:
 - Move to Network -> Moves working dir to NAS for usage on any comp
 - Computer volume (blah)
 - pause and play any playback
-TODO: open on startup
 """
 
 import os
@@ -84,7 +83,7 @@ async def on_message(message):
             bashCommand = "/Applications/Brave Browser.app"
             process = subprocess.Popen(['open', bashCommand, args], stdout=subprocess.PIPE)
         elif platform == "win32":
-            bashCommand = "/mnt/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe"
+            bashCommand = "/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe"
             process = subprocess.Popen([bashCommand, args], stdout=subprocess.PIPE)
 
         # TODO: open on `preferred_screen 2` -> fix wmctrl
