@@ -5,6 +5,20 @@ import subprocess
 from enum import Enum
 from sys import platform
 
+# Decorators to define event handlers
+# TODO: make decorator take args for possible commands, ex. close == exit
+class Routines(object):
+    def __init__(self):
+        self.routines = {} #map of routines to call
+    def define(self, func):
+        self.routines[func.__name__.replace("_routine", "")] = (func)
+        return func
+    def get(self, command):
+        #do things and publish events
+        return self.routines.get(command)
+
+routines = Routines()
+
 class BashCommand(Enum):
     # = (windows_command, osx_command)
     brave = {"win32": "/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe", "darwin": "open /Applications/Brave Browser.app"}
@@ -18,9 +32,11 @@ app_map = {
     'discord': ("", BashCommand.discord)
 }
 
-async def test_routine(message):
+@routines.define
+async def test_routine(message, app, args):
     await message.channel.send("JARVIS ran the test")
 
+@routines.define
 async def open_routine(message, app, args):
     default_args, bash_command = app_map.get(app, (None, None))
 
@@ -34,11 +50,13 @@ async def open_routine(message, app, args):
     process = subprocess.Popen([run_command, args], stdout=subprocess.PIPE)
     output, error = process.communicate()
 
-async def exit_routine(message, app):
+@routines.define
+async def exit_routine(message, app, args):
     if app == 'discord':
         os.system("TASKKILL /F /IM discord.exe")
     else:
         message.channel.send(f"JARVIS can't close {app}")
 
-async def sleep_routine():
+@routines.define
+async def sleep_routine(message, app, args):
     os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")

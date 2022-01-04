@@ -38,4 +38,3 @@ test - Reply with 'test'
 - pause and play any playback
 
 # TODOs:
-- Make command mapping into decorator (so I dont have to add each new cmd to brain)

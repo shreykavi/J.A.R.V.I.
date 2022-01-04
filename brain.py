@@ -5,7 +5,7 @@ import re
 import discord
 from dotenv import load_dotenv
 
-from routines import open_routine, exit_routine, test_routine, sleep_routine
+from routines import open_routine, exit_routine, test_routine, sleep_routine, routines
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -54,14 +54,9 @@ async def on_message(message):
     print(f"Received: {ext_cmd}")
 
     # Map to command routine
-    if msg == 'test':
-        await test_routine(message)
-    elif command == 'open' or command == 'search':
-        await open_routine(message, app, args)
-    elif command == 'exit' or command == 'close':
-        await exit_routine(message, app)
-    elif command == 'sleep':
-        await sleep_routine()
+    func = routines.get(command)
+    if func:
+        await func(message, app, args)
     else:
         await message.channel.send("Sorry Shrey I don't understand that command :(")
 
