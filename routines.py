@@ -39,3 +39,6 @@ async def exit_routine(message, app):
         os.system("TASKKILL /F /IM discord.exe")
     else:
         message.channel.send(f"JARVIS can't close {app}")
+
+async def sleep_routine():
+    os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")

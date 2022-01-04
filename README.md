@@ -24,9 +24,11 @@ Ex. `JARVIS::test`
 List of current commands:
 test - Reply with 'test'
 (open|search) (netflix|plex|youtube) for {any text here} - open Brave with app on a search term
+(open) (discord) - open app
+(close) (discord) - close app
+(sleep) - puts JARVIS to sleep
 
 # Ideas:
-- Turn on TV(periferral)
 - Open app on screen (could set name to TV or main monitor etc)
     - Open game?
 - Give me a new word to learn
@@ -34,3 +36,6 @@ test - Reply with 'test'
 - Move to Network -> Moves working dir to NAS for usage on any comp
 - Computer volume (blah)
 - pause and play any playback
+
+# TODOs:
+- Make command mapping into decorator (so I dont have to add each new cmd to brain)

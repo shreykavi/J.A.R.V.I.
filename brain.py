@@ -5,7 +5,7 @@ import re
 import discord
 from dotenv import load_dotenv
 
-from routines import open_routine, exit_routine, test_routine
+from routines import open_routine, exit_routine, test_routine, sleep_routine
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -60,6 +60,8 @@ async def on_message(message):
         await open_routine(message, app, args)
     elif command == 'exit' or command == 'close':
         await exit_routine(message, app)
+    elif command == 'sleep':
+        await sleep_routine()
     else:
         await message.channel.send("Sorry Shrey I don't understand that command :(")
 
