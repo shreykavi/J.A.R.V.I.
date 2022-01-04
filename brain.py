@@ -86,8 +86,6 @@ async def on_message(message):
             bashCommand = "/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe"
             process = subprocess.Popen([bashCommand, args], stdout=subprocess.PIPE)
 
-        # TODO: open on `preferred_screen 2` -> fix wmctrl
-        
         output, error = process.communicate()
     elif ext_cmd['command'] == 'teamviewer':
         if platform == "darwin":
@@ -95,6 +93,9 @@ async def on_message(message):
             return
         bashCommand = "/mnt/c/Program Files (x86)/TeamViewer/TeamViewer.exe"
         process = subprocess.Popen([bashCommand], stdout=subprocess.PIPE)
+    elif ext_cmd['command'] == 'exit' or ext_cmd['command'] == 'close':
+        if ext_cmd['app'] == 'discord':
+            os.system("TASKKILL /F /IM discord.exe")
     else:
         await message.channel.send("Sorry Shrey I don't understand that command :(")
 
