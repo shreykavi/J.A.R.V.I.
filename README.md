@@ -24,3 +24,13 @@ Ex. `JARVIS::test`
 List of current commands:
 test - Reply with 'test'
 (open|search) (netflix|plex|youtube) for {any text here} - open Brave with app on a search term
+
+# Ideas:
+- Turn on TV(periferral)
+- Open app on screen (could set name to TV or main monitor etc)
+    - Open game?
+- Give me a new word to learn
+- Download movies, music albums, books on plexbox
+- Move to Network -> Moves working dir to NAS for usage on any comp
+- Computer volume (blah)
+- pause and play any playback
