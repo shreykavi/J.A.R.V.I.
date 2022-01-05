@@ -20,16 +20,17 @@ class Routines(object):
 routines = Routines()
 
 class BashCommand(Enum):
-    # = (windows_command, osx_command)
+    # app = (windows_command, osx_command)
     brave = {"win32": "/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe", "darwin": "open /Applications/Brave Browser.app"}
     discord = {"win32": "/Users/Shrey/AppData/Local/Discord/app-1.0.9003/Discord.exe"}
 
-app_map = {
+# Only apps that require default args have to be mapped here
+# otherwise all BashCommands are automatically registered
+app_map_with_args = {
     # name : (default_args, command)
     'netflix': ("https://www.netflix.com/search?q=", BashCommand.brave),
     'plex': ("https://app.plex.tv/desktop#!/search?query=", BashCommand.brave),
     'youtube': ("https://www.youtube.com/results?search_query=", BashCommand.brave),
-    'discord': ("", BashCommand.discord)
 }
 
 @routines.define
@@ -38,7 +39,13 @@ async def test_routine(message, app, args):
 
 @routines.define
 async def open_routine(message, app, args):
-    default_args, bash_command = app_map.get(app, (None, None))
+    # Check default arg apps map
+    default_args, bash_command = app_map_with_args.get(app, ("", None))
+
+    # If not defined yet check BashCommand Enum for the app
+    if not bash_command:
+        all_commands = {cmd.name: cmd for cmd in BashCommand}
+        bash_command = all_commands.get(app)
 
     try: 
         run_command = bash_command.value.get(platform)
