@@ -55,7 +55,9 @@ async def open_routine(message, app, args):
 
     args = default_args + args.replace(" ", "+")
     process = subprocess.Popen([run_command, args], stdout=subprocess.PIPE)
-    output, error = process.communicate()
+
+    # Dont need unless debugging + causes hangs
+    # output, error = process.communicate()
 
 @routines.define
 async def exit_routine(message, app, args):
